@@ -1,0 +1,32 @@
+/*
+* CPS 222 - Project 5
+* Authors: Elijah Opoku-Nyarko and Jake Colbert
+*/
+
+#include <iostream>
+#include <string>
+#include <list>
+#include <map>
+#include <queue>
+
+/**
+ * towns connected by roads
+ */
+class Province
+{
+public:
+
+    /**
+     * Constructor
+     * @param source Input data for province
+     */
+    Province(std::istream & source);
+
+    /**
+     * Print towns and roads in province in breadth-first search order
+     * @param start Index to start traversal at
+     * @param output Stream to print data to
+     */
+    void printAll(int start, std::ostream & output) const;
+
+    void printShortestPath(std::ostream & output) const;
