@@ -30,3 +30,22 @@ public:
     void printAll(int start, std::ostream & output) const;
 
     void printShortestPath(std::ostream & output) const;
+
+    /**
+     * Find shortest path from one town to another
+     */
+    void findShortestPath();
+
+    void minSpan(std::ostream & output) const;
+
+    void removeBridges(std::ostream & output) const;
+
+    void articulationPoints(std::ostream & output) const;
+
+    void dfs(std::vector<int> & dfsTowns) const;
+
+    /**
+     * Destructor
+     */
+    ~Province() { delete [] _towns; }
+
