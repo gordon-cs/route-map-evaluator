@@ -9,6 +9,10 @@
 #include <map>
 #include <queue>
 
+
+// re-evaluate security of these classes
+
+
 /**
  * towns connected by roads
  */
@@ -47,7 +51,7 @@ public:
     /**
      * Destructor
      */
-    ~Province() { delete [] _towns; }
+    ~Province() {}
 
 private:
 
@@ -70,13 +74,13 @@ private:
          * @param isBridge Whether or not the road is a bridge
          * @param length Length of the road in miles
          */
-        Road(int head, int tail, bool isBridge, double length)
+        Road(int head, int tail, char isBridge, double length)
             : _head(head), _tail(tail), _isBridge(isBridge), _length(length)
         {}
 
         int _head; // Index of originating town in vertex array
         int _tail;
-        bool _isBridge;
+        char _isBridge;
         double _length;
 
         bool operator < (Road road2) const;
@@ -88,7 +92,7 @@ private:
      */
     class Town
     {
-    public:
+    public: // consider making some of these private (RoadList)
         std::string _name;
         typedef std::list <Road> RoadList;
         RoadList _roads;
@@ -96,6 +100,6 @@ private:
 
     int _numberOfTowns;
     int _numberOfRoads;
-    Town *_towns;
+    std::vector<Town> _towns;
     std::vector<Road> _roads;
 };

@@ -1,0 +1,9 @@
+# Mac files
+.DS_Store
+
+# Mac + Google Drive files
+Icon?
+
+# Emacs backup and temp files
+*~
+\#*\#
