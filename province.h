@@ -30,7 +30,7 @@ public:
     void printAll(int start, std::ostream & output) const;
 
     void printShortestPath(std::ostream & output) const;
-
+    
     /**
      * Find shortest path from one town to another
      */
@@ -49,3 +49,12 @@ public:
      */
     ~Province() { delete [] _towns; }
 
+private:
+
+    int smallest(double dist [], std::list <int> toVisit, int numTowns) const;
+    std::vector<int> bfs(int start) const;
+    void dfsAux(int current, std::vector<int> & dfsTowns, bool visited []) const;
+
+
+
+    
