@@ -18,10 +18,12 @@
 
 using namespace std;
 
-
 int main() {
   while(!cin.eof()) {
-    Province province(cin);
+    cout << "its not actually running" << endl;
+    // the following lines produce 'undefined symbols for architecture' errors
+    // Province theProvince = * new Province(cin);
+    // theProvince.printAll(cout);
   }
 }
 

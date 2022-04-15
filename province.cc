@@ -23,14 +23,15 @@ using namespace std;
 *                      Danvers, not a bridge, 2.9 miles long)
 */
 
-Province::Province(std::istream &source) {
+Province::Province(std::istream & source) {
   // Read first line of input
   source >> _numberOfTowns >> _numberOfRoads;  
+  _towns = new Town[_numberOfTowns];
   std::map<std::string, int> townMap; // maps town names to their indexes in _towns
 
   // Read town names
   for (int i = 0; i < _numberOfTowns; i++) {
-    source >> _towns.push_back(Town()); // This needs to be converted to vector, im not sure how exactly
+    source >> _towns[i]._name; // This needs to be converted to vector, im not sure how exactly
     townMap[_towns[i]._name] = i;
   }   
 
@@ -44,14 +45,17 @@ Province::Province(std::istream &source) {
   }   
 }
 
-void Province::printAll(int start, std::ostream & output) const{
+void Province::printAll(std::ostream & output) {
   output << "The input data is:" << endl << endl;
-
-  for (Town town : _towns) {
+  for (int i = 0; i < sizeof(_towns)/sizeof(_towns[0]); i++) {
     output << _towns[i]._name << endl;
     for (Road road : _towns[i]._roads) {
-      output << "\t" << endl; // needs to be finished too
+      output << "\t" << road._tail << " " << road._length << " mi";
+      if (road._isBridge == 'B' || 'b') {
+        output << " via bridge" << endl;
+      } else {
+        output << endl;
+      }
     }
-
   }
 }

@@ -28,11 +28,9 @@ public:
 
     /**
      * Print towns and roads in province in breadth-first search order
-     * @param start Index to start traversal at
      * @param output Stream to print data to
      */
-    void printAll(int start, std::ostream & output) const;
-
+    void printAll(std::ostream & output);
     void printShortestPath(std::ostream & output) const;
     
     /**
@@ -100,6 +98,6 @@ private:
 
     int _numberOfTowns;
     int _numberOfRoads;
-    std::vector<Town> _towns;
+    Town *_towns;
     std::vector<Road> _roads;
 };
