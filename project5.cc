@@ -20,10 +20,8 @@ using namespace std;
 
 int main() {
   while(!cin.eof()) {
-    cout << "its not actually running" << endl;
-    // the following lines produce 'undefined symbols for architecture' errors
-    // Province theProvince = * new Province(cin);
-    // theProvince.printAll(cout);
+    Province theProvince(cin);
+    theProvince.printAll(cout);
   }
 }
 

@@ -3,15 +3,16 @@
 * Authors: Elijah Opoku-Nyarko and Jake Colbert
 */
 
-#include "./province.h"
 #include <algorithm>
 #include <string>
 #include <stack>
 #include <cfloat>
 
+#include "province.h"
+
 using namespace std;
 
-/*
+/*f
 * Constructor
 * @param source File containing province:
 *               1. One line: number of towns (n), number of roads (p)
@@ -32,14 +33,16 @@ Province::Province(std::istream & source) {
   // Read town names
   for (int i = 0; i < _numberOfTowns; i++) {
     source >> _towns[i]._name; // This needs to be converted to vector, im not sure how exactly
+    cout << "This is the name: " << &_towns[i]._name << endl;
     townMap[_towns[i]._name] = i;
   }   
 
   for (int i = 0; i < _numberOfRoads; i++) {
     string head, tail;
     char bridge;
-    float distance; 
+    float distance;
     source >> head >> tail >> bridge >> distance;
+    cout << "This is the road: " << _towns[townMap.at(head)]._roads << endl;
     // add a road to the _roads array that belongs to the town at the index map.at(head) returns
     _towns[townMap.at(head)]._roads.push_back(Road(townMap.at(head), townMap.at(tail), bridge, distance));
   }   
@@ -47,7 +50,8 @@ Province::Province(std::istream & source) {
 
 void Province::printAll(std::ostream & output) {
   output << "The input data is:" << endl << endl;
-  for (int i = 0; i < sizeof(_towns)/sizeof(_towns[0]); i++) {
+  cout << endl << "Size of towns: " << sizeof(&_towns)/sizeof(&_towns[0]) << endl;
+  for (int i = 0; i < sizeof(&_towns)/sizeof(&_towns[0]); i++) {
     output << _towns[i]._name << endl;
     for (Road road : _towns[i]._roads) {
       output << "\t" << road._tail << " " << road._length << " mi";
