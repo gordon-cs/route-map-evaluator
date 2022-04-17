@@ -37,29 +37,49 @@ Province::Province(std::istream & source) {
     townMap[_towns[i]._name] = i;
   }   
 
+  // Read roads
   for (int i = 0; i < _numberOfRoads; i++) {
-    string head, tail;
-    char bridge;
-    float distance;
-    source >> head >> tail >> bridge >> distance;
-    cout << "This is the road: " << _towns[townMap.at(head)]._roads << endl;
-    // add a road to the _roads array that belongs to the town at the index map.at(head) returns
-    _towns[townMap.at(head)]._roads.push_back(Road(townMap.at(head), townMap.at(tail), bridge, distance));
+        std::string tail, head;
+        source >> tail >> head;
+        int tailIndex = townMap[tail];  // index of the first town
+        int headIndex = townMap[head];  // index of the second town
+
+  // Get the type of road ("B" If Bridge, "N" if normal road)
+  char type;
+  source >> type;
+  bool isBridge = (type == 'B');
+  // Not sure how to Get the type if it is a normal road (ie. Not a Bridge) 
+
+  // Length of road
+  double length;
+  source >> length;
+
+  // Add a road to the road list
+  Road newRoad(headIndex, tailIndex, isBridge, length);
+  _roads.push_back(newRoad);
+
+  // Add a road to two connecting towns
+  _towns[tailIndex]._roads.push_back(Road(headIndex, tailIndex,
+                                          isBridge, length));
+  _towns[headIndex]._roads.push_back(Road(tailIndex, headIndex,
+            isBridge, length));
+
+
   }   
 }
 
-void Province::printAll(std::ostream & output) {
-  output << "The input data is:" << endl << endl;
-  cout << endl << "Size of towns: " << sizeof(&_towns)/sizeof(&_towns[0]) << endl;
-  for (int i = 0; i < sizeof(&_towns)/sizeof(&_towns[0]); i++) {
-    output << _towns[i]._name << endl;
-    for (Road road : _towns[i]._roads) {
-      output << "\t" << road._tail << " " << road._length << " mi";
-      if (road._isBridge == 'B' || 'b') {
-        output << " via bridge" << endl;
-      } else {
-        output << endl;
-      }
-    }
-  }
-}
+// void Province::printAll(std::ostream & output) {
+//   output << "The input data is:" << endl << endl;
+//   cout << endl << "Size of towns: " << sizeof(&_towns)/sizeof(&_towns[0]) << endl;
+//   for (int i = 0; i < sizeof(&_towns)/sizeof(&_towns[0]); i++) {
+//     output << _towns[i]._name << endl;
+//     for (Road _road: _towns[i]._roads) {
+//       output << "\t" << road._tail << " " << road._length << " mi";
+//       if (road._isBridge == 'B' || 'b') {
+//         output << " via bridge" << endl;
+//       } else {
+//         output << endl;
+//       }
+//     }
+//   }
+// }
