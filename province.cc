@@ -33,7 +33,7 @@ Province::Province(std::istream & source) {
   // Read town names
   for (int i = 0; i < _numberOfTowns; i++) {
     source >> _towns[i]._name; // This needs to be converted to vector, im not sure how exactly
-    cout << "This is the name: " << &_towns[i]._name << endl;
+    //cout << "This is the name: " << &_towns[i]._name << endl;
     townMap[_towns[i]._name] = i;
   }   
 
@@ -88,6 +88,35 @@ void Province::printAll(int start, std::ostream & output) {
 
     output << "      ";
     output << _towns[current]._name << endl;
+
+    // Enqueue current vertex's unscheduled neighbors
+    for (Town::RoadList::iterator neighbor = _towns[current]._roads.begin();
+      neighbor != _towns[current]._roads.end(); neighbor++) {
+        std::string neighborName = _towns[neighbor->_head]._name;
+
+        output << "        ";
+        output << neighborName << " " << neighbor->_length << " mi";
+
+        // if the type is bridge, then add to output
+        if (neighbor ->_isBridge) {
+          output << " via bridge";
+        }
+
+        output << endl; 
+
+        int head = neighbor ->_head;
+
+        // If neighbour is not scheduled, add neighbor to the queue
+        if (!scheduled[head]) {
+          toVisit.push(head);
+          scheduled[head] = true;
+        }
+      }
   }
 
+  output << endl << endl;
+
 }
+  
+
+
