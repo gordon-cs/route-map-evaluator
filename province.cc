@@ -89,7 +89,7 @@ void Province::printAll(int start, std::ostream & output) {
     output << "      ";
     output << _towns[current]._name << endl;
 
-    // Enqueue current vertex's unscheduled neighbors
+    // Add current town's(vertex's) unscheduled neighbors to the queue
     for (Town::RoadList::iterator neighbor = _towns[current]._roads.begin();
       neighbor != _towns[current]._roads.end(); neighbor++) {
         std::string neighborName = _towns[neighbor->_head]._name;
