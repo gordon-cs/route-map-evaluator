@@ -21,7 +21,7 @@ using namespace std;
 int main() {
   while(!cin.eof()) {
     Province theProvince(cin);
-    theProvince.printAll(cout);
+    theProvince.printAll(0, cout);
   }
 }
 

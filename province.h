@@ -30,7 +30,7 @@ public:
      * Print towns and roads in province in breadth-first search order
      * @param output Stream to print data to
      */
-    void printAll(std::ostream & output);
+    void printAll(int start, std::ostream & output);
     void printShortestPath(std::ostream & output) const;
     
     /**

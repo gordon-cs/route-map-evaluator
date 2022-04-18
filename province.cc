@@ -68,18 +68,26 @@ Province::Province(std::istream & source) {
   }   
 }
 
-// void Province::printAll(std::ostream & output) {
-//   output << "The input data is:" << endl << endl;
-//   cout << endl << "Size of towns: " << sizeof(&_towns)/sizeof(&_towns[0]) << endl;
-//   for (int i = 0; i < sizeof(&_towns)/sizeof(&_towns[0]); i++) {
-//     output << _towns[i]._name << endl;
-//     for (Road _road: _towns[i]._roads) {
-//       output << "\t" << road._tail << " " << road._length << " mi";
-//       if (road._isBridge == 'B' || 'b') {
-//         output << " via bridge" << endl;
-//       } else {
-//         output << endl;
-//       }
-//     }
-//   }
-// }
+void Province::printAll(int start, std::ostream & output) {
+  // keep track of whether a town(vertex) has been scheduled to be visited
+  bool scheduled[_numberOfTowns];
+  for (int i = 0; i < _numberOfTowns; i++){
+    scheduled[i] = false;
+  }
+
+  // Keep track of which towns have been visited
+  queue <int> toVisit; // use queue to keep track of which town to visit next
+  toVisit.push(start);
+  scheduled[start] = true;
+  output << "The input data is:" << endl << endl;
+
+  // Visit every town in the queue
+  while (!toVisit.empty()) {
+    int current = toVisit.front();
+    toVisit.pop();
+
+    output << "      ";
+    output << _towns[current]._name << endl;
+  }
+
+}
