@@ -79,14 +79,14 @@ void Province::printAll(int start, std::ostream & output) {
   queue <int> toVisit; // use queue to keep track of which town to visit next
   toVisit.push(start);
   scheduled[start] = true;
-  output << "The input data is:" << endl << endl;
+  output << "The input data is :" << endl << endl;
 
   // Visit every town in the queue
   while (!toVisit.empty()) {
     int current = toVisit.front();
     toVisit.pop();
 
-    output << "      ";
+    output << "   ";
     output << _towns[current]._name << endl;
 
     // Add current town's(vertex's) unscheduled neighbors to the queue
@@ -94,7 +94,7 @@ void Province::printAll(int start, std::ostream & output) {
       neighbor != _towns[current]._roads.end(); neighbor++) {
         std::string neighborName = _towns[neighbor->_head]._name;
 
-        output << "        ";
+        output << "         ";
         output << neighborName << " " << neighbor->_length << " mi";
 
         // if the type is bridge, then add to output

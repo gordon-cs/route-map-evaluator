@@ -10,5 +10,5 @@ project5:	project5.cc province.cc province.h
 # test the code against an expected output file
 # this test should grow into a spaceship and end with blinkers
 test-requirement1:	project5
-	./project5 < test-data/requirement1.in > test-data/project4.out
-	diff test-data/project4.out test-data/requirement1.out
+	./project5 < test-data/requirement1.in > test-data/project5.out
+	diff test-data/project5.out test-data/requirement1.out
