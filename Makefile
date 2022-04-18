@@ -9,7 +9,6 @@ project5:	project5.cc province.cc province.h
 
 # test the code against an expected output file
 # this test should grow into a spaceship and end with blinkers
-test-nowhere:
-	./project5 < test-files/t01-nowhere.in > tests/project4.out
-	diff test-files/project4.out test-files/t01-nowhere.out > test.diff
-	wc -l test.diff 
+test-requirement1:
+	./project5 < test-data/requirement1.in > test-data/project4.out
+	diff test-data/project4.out test-data/requirement1.out
