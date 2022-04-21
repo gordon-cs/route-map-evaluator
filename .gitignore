@@ -1,0 +1,47 @@
+# From a github template for removing unneccessary C++ files
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.app
+
+# The project1 executable and related files
+project5
+
+# Files returned by tests
+*.diff
+test-data/project5.out
+
+# Mac setup files
+*.DS_Store
+
+# VS Code setup files
+*.vscode
+

@@ -9,6 +9,10 @@
 #include <map>
 #include <queue>
 
+
+// re-evaluate security of these classes
+
+
 /**
  * towns connected by roads
  */
@@ -24,11 +28,9 @@ public:
 
     /**
      * Print towns and roads in province in breadth-first search order
-     * @param start Index to start traversal at
      * @param output Stream to print data to
      */
-    void printAll(int start, std::ostream & output) const;
-
+    void printAll(int start, std::ostream & output);
     void printShortestPath(std::ostream & output) const;
     
     /**
@@ -47,7 +49,7 @@ public:
     /**
      * Destructor
      */
-    ~Province() { delete [] _towns; }
+    ~Province() {}
 
 private:
 
@@ -70,13 +72,13 @@ private:
          * @param isBridge Whether or not the road is a bridge
          * @param length Length of the road in miles
          */
-        Road(int head, int tail, bool isBridge, double length)
+        Road(int head, int tail, char isBridge, double length)
             : _head(head), _tail(tail), _isBridge(isBridge), _length(length)
         {}
 
         int _head; // Index of originating town in vertex array
         int _tail;
-        bool _isBridge;
+        char _isBridge;
         double _length;
 
         bool operator < (Road road2) const;
@@ -88,7 +90,7 @@ private:
      */
     class Town
     {
-    public:
+    public: // consider making some of these private (RoadList)
         std::string _name;
         typedef std::list <Road> RoadList;
         RoadList _roads;
