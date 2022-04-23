@@ -12,6 +12,18 @@
 
 using namespace std;
 
+/*f
+* Constructor
+* @param source File containing province:
+*               1. One line: number of towns (n), number of roads (p)
+*                  as integers
+*               2. n lines: names of towns, all uppercase
+*               3. p lines: roads, defined as names of towns they
+*                  connect, bridge/not bridge, and length in miles
+*                  ex: BEVERLY DANVERS N 2.9 (connects Beverly and
+*                      Danvers, not a bridge, 2.9 miles long)
+*/
+
 Province::Province(std::istream & source) {
   // Read first line of input
   source >> _numberOfTowns >> _numberOfRoads;  
@@ -20,19 +32,39 @@ Province::Province(std::istream & source) {
 
   // Read town names
   for (int i = 0; i < _numberOfTowns; i++) {
-    source >> _towns[i]._name; 
+    source >> _towns[i]._name; // This needs to be converted to vector, im not sure how exactly
+    //cout << "This is the name: " << &_towns[i]._name << endl;
     townMap[_towns[i]._name] = i;
   }   
 
   // Read roads
   for (int i = 0; i < _numberOfRoads; i++) {
-    string tail, head;
-    char bridgeFlag;
-    double length;
-    source >> tail >> head >> bridgeFlag >> length;
-    bool isBridge = (bridgeFlag == 'B');
-    _towns[townMap.at(tail)]._roads.push_back(Road(townMap.at(head), townMap.at(tail), isBridge, length));
-    _towns[townMap.at(head)]._roads.push_back(Road(townMap.at(tail), townMap.at(head), isBridge, length));
+        std::string tail, head;
+        source >> tail >> head;
+        int tailIndex = townMap[tail];  // index of the first town
+        int headIndex = townMap[head];  // index of the second town
+
+  // Get the type of road ("B" If Bridge, "N" if normal road)
+  char type;
+  source >> type;
+  bool isBridge = (type == 'B');
+  // Not sure how to Get the type if it is a normal road (ie. Not a Bridge) 
+
+  // Length of road
+  double length;
+  source >> length;
+
+  // Add a road to the road list
+  Road newRoad(headIndex, tailIndex, isBridge, length);
+  _roads.push_back(newRoad);
+
+  // Add a road to two connecting towns
+  _towns[tailIndex]._roads.push_back(Road(headIndex, tailIndex,
+                                          isBridge, length));
+  _towns[headIndex]._roads.push_back(Road(tailIndex, headIndex,
+            isBridge, length));
+
+
   }   
 }
 
@@ -159,6 +191,34 @@ void Province::printShortestPath(std::ostream & output) const {
                 dist[neighbor->_head] = newDist;
                 prev[neighbor->_head] = smallestIndex;
             }
+        }
+    }
+
+    // print out the data for each non capital town
+    for (int i = 1; i < _numberOfTowns; i++) {
+        output << "      " << "The shortest route from " + _towns[0]._name;
+        output << " to " + _towns[i]._name + " is " << dist[i];
+        output << " mi:" << std::endl;
+
+        // stack to hold the path to the town at index i
+        std::stack <int> predecessors;
+
+        // add town at i to stack
+        int predecessor = i;
+        predecessors.push(i);
+
+        // follow the links in prev until we get to the capital,
+        // adding each town to the predecessor stack
+        while (predecessor != 0) {
+            predecessor = prev[predecessor];
+            predecessors.push(predecessor);
+        }
+
+        // print out the names for each entry in the stack
+        while (!predecessors.empty()) {
+            output << "            " << _towns[predecessors.top()]._name;
+            output << std::endl;
+            predecessors.pop();
         }
     }
 }
