@@ -43,6 +43,16 @@ The shortest routes from Salem are:
 ------------------------------------------------
 ------------------------------------------------
 
+The road upgrading goal can be achieved at minimal cost by upgrading:
+
+      Salem to Beverly
+      Danvers to Beverly
+      Wenham to Danvers
+      Salem to Lynn
+
+------------------------------------------------
+------------------------------------------------
+
 
 ------------------------------------------------
 ---------------- New DataSet: ------------------
@@ -61,6 +71,13 @@ The shortest routes from Wenham are:
       The shortest route from Wenham to Hamilton is 1 mi:
             Wenham
             Hamilton
+
+------------------------------------------------
+------------------------------------------------
+
+The road upgrading goal can be achieved at minimal cost by upgrading:
+
+      Hamilton to Wenham
 
 ------------------------------------------------
 ------------------------------------------------

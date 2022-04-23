@@ -223,4 +223,12 @@ void Province::printShortestPath(std::ostream & output) const {
     }
 }
 
+/**
+ * < operator used to compare two roads
+ * @param road2 A road
+ * @return True if road1 is shorter in length than road 2
+ */
+bool Province::Road::operator < (Road road2) const {
+    return this->_length < road2._length;
+}
 
