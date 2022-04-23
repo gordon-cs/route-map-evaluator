@@ -46,6 +46,6 @@ int main(int argc, char *argv[]) {
 
         theProvince.printAll(0, cout);
 
-        
+
     }
 }

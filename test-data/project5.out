@@ -24,6 +24,25 @@ The input data is :
          Danvers 4.2 mi
 
 
+The shortest routes from Salem are:
+
+      The shortest route from Salem to Wenham is 7.6 mi:
+            Salem
+            Beverly
+            Wenham
+      The shortest route from Salem to Beverly is 2.4 mi:
+            Salem
+            Beverly
+      The shortest route from Salem to Danvers is 3.7 mi:
+            Salem
+            Danvers
+      The shortest route from Salem to Lynn is 4.9 mi:
+            Salem
+            Lynn
+
+------------------------------------------------
+------------------------------------------------
+
 
 ------------------------------------------------
 ---------------- New DataSet: ------------------
@@ -36,4 +55,13 @@ The input data is :
    Hamilton
          Wenham 1 mi
 
+
+The shortest routes from Wenham are:
+
+      The shortest route from Wenham to Hamilton is 1 mi:
+            Wenham
+            Hamilton
+
+------------------------------------------------
+------------------------------------------------
 

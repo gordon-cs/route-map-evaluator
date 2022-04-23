@@ -117,6 +117,82 @@ void Province::printAll(int start, std::ostream & output) {
   output << endl << endl;
 
 }
-  
+
+int Province::smallest(double dist[], std::list <int> toVisit,
+  int numTowns) const {
+  int smallest = toVisit.front();
+
+  if (toVisit.size() > 1) {
+    for (int i = 0; i < numTowns; i++) {
+      if (dist[i] < dist[smallest]) {
+        bool found = (std::find(toVisit.begin(), toVisit.end(), i)
+                      != toVisit.end());
+        if (found) {
+          smallest = i;
+        }
+      }
+    }
+  }
+    return smallest;
+}
+
+/**
+* Print the shortest route from the capital of the
+* province to each of the other towns
+*/
+void Province::printShortestPath(std::ostream & output) const {
+
+    // if there is only one town only one town
+    if (_numberOfTowns == 1) {
+        output << "There is only one town, so the provincial "
+               << "officials have no need of efficient routes!";
+        return;
+    }
+
+    output << "The shortest routes from " + _towns[0]._name;
+    output << " are:" << std::endl << std::endl;
+
+    // keeps track of the index of the predecessor to each
+    // town(vertex) n on the shortest path to n
+    int prev[_numberOfTowns];
+
+    // queue to keep track of which town(vertex) to visit next
+    list <int> toVisit;
+
+    // keeps track of the distance from the capital to each town
+    // following the shortest path
+    double dist[_numberOfTowns];
+
+
+    // set defaults for dist, prev, and add all vertices to toVisit
+    for (int i = 0; i < _numberOfTowns; i++) {
+        dist[i] = DBL_MAX;
+        toVisit.push_back(i);
+    }
+
+    // distance from the capital to the capital is zero
+    dist[0] = 0.0;
+
+    while (!toVisit.empty()) {
+        int smallestIndex = smallest(dist, toVisit, _numberOfTowns);
+
+        toVisit.remove(smallestIndex);
+
+        // Add current vertex's neighbors to the queue
+        for (Town::RoadList::iterator neighbor =
+            _towns[smallestIndex]._roads.begin();
+            neighbor != _towns[smallestIndex]._roads.end(); neighbor++) {
+            // new distance needed for testing
+            double newDist = dist[smallestIndex] + neighbor->_length;
+
+            // if new dist is smaller, replace the old one, and
+            // update the corresponding entry in prev
+            if (newDist < dist[neighbor->_head]) {
+                dist[neighbor->_head] = newDist;
+                prev[neighbor->_head] = smallestIndex;
+            }
+        }
+    }
+}
 
 
