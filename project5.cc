@@ -18,34 +18,33 @@ using namespace std;
 * check if we are at the end of the file
 */
 bool eof() {
-    char c;
-    std::cin >> c;
-    // if the fie is ended, return true
-    if (std::cin.eof()) {
-        return true;
-    } else {
-        // if the file contains more data, return the previously gotten
-        // data to cin
-        std::cin.unget();
-        return false;
-    }
+  char c;
+  cin >> c;
+  // if the fie is ended, return true
+  if (cin.eof()) {
+    return true;
+  } else {
+    // if the file contains more data, return the previously gotten
+    // data to cin
+    cin.unget();
+    return false;
+  }
 }
 
 int main(int argc, char *argv[]) {
-    // Repeatedly read input from standard input
-    while (!eof()) {
-        // create a new graph for each loop, which will read all of the
-        // corresponding data per graph
-        Province theProvince(cin);
+  // Repeatedly read input from standard input
+  while (!eof()) {
+    // create a new graph for each loop, which will read all of the
+    // corresponding data per graph
+    Province theProvince(cin);
 
-        std::cout << std::endl;
-        std::cout << "------------------------------------------------" << std::endl;
-        std::cout << "---------------- New DataSet: ------------------" << std::endl;
-        std::cout << "------------------------------------------------" << std::endl;
-        std::cout << std::endl;
+    cout << endl;
+    cout << "------------------------------------------------" << endl;
+    cout << "---------------- New DataSet: ------------------" << endl;
+    cout << "------------------------------------------------" << endl;
+    cout << endl;
 
-        theProvince.printAll(0, cout);
+    theProvince.printAll(0, cout);
 
-
-    }
+  }
 }
