@@ -113,9 +113,7 @@ void Province::printAll(int start, std::ostream & output) {
         }
       }
   }
-
   output << endl << endl;
-
 }
 
 int Province::smallest(double dist[], std::list <int> toVisit,
