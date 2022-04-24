@@ -54,6 +54,13 @@ int main(int argc, char *argv[]) {
         std::cout << "------------------------------------------------" << std::endl;
         std::cout << std::endl;
 
+        theProvince.minSpan(std::cout);
+
+        std::cout << std::endl;
+        std::cout << "------------------------------------------------" << std::endl;
+        std::cout << "------------------------------------------------" << std::endl;
+        std::cout << std::endl;
+
         
     }
 }
