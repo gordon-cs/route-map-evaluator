@@ -232,3 +232,91 @@ bool Province::Road::operator < (Road road2) const {
     return this->_length < road2._length;
 }
 
+/**
+ * Find minimum cost spanning tree of the province
+ */
+void Province::minSpan(std::ostream & output) const {
+
+    // if only one town
+    if (_numberOfTowns == 1) {
+        output << "There is only one town, so the province "
+               << "does not need to upgrade any roads!";
+        return;
+    }
+    
+    list<Road> roads;
+    vector<Road> minSpanTree;
+    vector<int> higher;
+    
+    // Initialize a numComponent value for each town to 0
+    int numComponent[_numberOfTowns];
+    for (int i = 0; i < _numberOfTowns; i++) {
+        numComponent[i] = 0;
+    }
+    
+    // Add all roads to list of roads
+    for (int i = 0; i < _numberOfRoads; i++) {
+        roads.push_back(_roads[i]);
+    }
+
+    // Sort list of roads by length
+    roads.sort();
+
+    int compNum = 0;  // Used to determine if edge forms a cycle
+    while (minSpanTree.size() < _numberOfTowns - 1) {
+        Road minRoad = roads.front();
+        roads.pop_front();
+
+        // Both towns have component number 0
+        if (numComponent[minRoad._head] == 0 &&
+            numComponent[minRoad._tail] == 0) {
+            minSpanTree.push_back(minRoad);
+            compNum++;
+            numComponent[minRoad._head] = compNum;
+            numComponent[minRoad._tail] = compNum;
+
+        // Only one town has component number 0
+        } else if (numComponent[minRoad._head] == 0) {
+            minSpanTree.push_back(minRoad);
+            numComponent[minRoad._head] = numComponent[minRoad._tail];
+
+        // Other town has component number 0
+        } else if (numComponent[minRoad._tail] == 0) {
+            minSpanTree.push_back(minRoad);
+            numComponent[minRoad._tail] = numComponent[minRoad._head];
+
+        // If component number of one town is less than other town
+        } else if (numComponent[minRoad._head] <
+                   numComponent[minRoad._tail]) {
+            minSpanTree.push_back(minRoad);
+            higher.push_back(minRoad._tail);
+
+            // Set all higher road components to value of lower
+            for (int i = 0; i < higher.size(); i++) {
+                higher[i] = numComponent[minRoad._head];
+            }
+
+        // If component number of other town is less than other town
+        } else if (numComponent[minRoad._head] >
+                   numComponent[minRoad._tail]) {
+            minSpanTree.push_back(minRoad);
+            higher.push_back(minRoad._head);
+
+            // Set all higher road components to value of lower
+            for (int i = 0; i < higher.size(); i++) {
+                higher[i] = numComponent[minRoad._tail];
+            }
+        }
+    }
+    
+    output << "The road upgrading goal can be achieved at minimal cost by upgrading:";
+    output << std::endl << std::endl;
+
+    // Print names of towns in minimum spanning tree of province
+    for (int i = 0; i < minSpanTree.size(); i++) {
+        output << "      ";
+        output << _towns[minSpanTree[i]._head]._name;
+        output << " to ";
+        output << _towns[minSpanTree[i]._tail]._name << std::endl;
+    }
+}
