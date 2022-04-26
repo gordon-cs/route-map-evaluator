@@ -336,7 +336,7 @@ std::vector<int> Province::bfs(int start) const {
   // While all towns have not been visited
   while (!toVisit.empty()) {
 
-    // Remove current town from queue, add to results
+    // Remove current town from queue and add to results
     int current = toVisit.front();
     toVisit.pop();
     results.push_back(current);
