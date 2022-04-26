@@ -54,7 +54,14 @@ public:
 private:
 
 	int smallest(double dist [], std::list <int> toVisit, int numTowns) const;
+
+	/**
+	* Conduct a breadth-first traversal on the province, ignoring bridges
+	* @param start Index of town to start traversal at
+	* @return - List of indices of towns in order of traversal
+ 	*/
   std::vector<int> bfs(int start) const;
+  
   void dfsAux(int current, std::vector<int> & dfsTowns, bool visited []) const;
 
   /**

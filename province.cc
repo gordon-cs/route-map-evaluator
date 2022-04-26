@@ -318,3 +318,44 @@ void Province::minSpan(std::ostream & output) const {
     output << _towns[minSpanTree[i]._tail]._name << std::endl;
   }
 }
+
+std::vector<int> Province::bfs(int start) const {
+  // Initialize list of towns scheduled to visit
+  bool scheduled[_numberOfTowns];
+  for (int i = 0; i < _numberOfTowns; i ++) {
+    scheduled[i] = false;
+  }
+
+  // Initialize list of towns to visit with starting town
+  std::queue<int> toVisit;
+  toVisit.push(start);
+
+  scheduled[start] = true;
+  std::vector<int> results;
+
+  // While all towns have not been visited
+  while (!toVisit.empty()) {
+
+    // Remove current town from queue, add to results
+    int current = toVisit.front();
+    toVisit.pop();
+    results.push_back(current);
+
+    // Iterate over neighbors to current town
+    for (Town::RoadList::iterator neighbor =
+        _towns[current]._roads.begin();
+      neighbor != _towns[current]._roads.end();
+      neighbor ++) {
+
+      // If neighbor is not bridge and is not scheduled,
+      // add to results and schedule
+      if (!neighbor->_isBridge && !scheduled[neighbor->_head]) {
+        toVisit.push(neighbor->_head);
+        scheduled[neighbor->_head] = true;
+      }
+    }
+  }
+
+  return results;
+}
+
