@@ -359,3 +359,63 @@ std::vector<int> Province::bfs(int start) const {
   return results;
 }
 
+/**
+ * Remove bridges and print the list of towns that remain connected
+ */
+void Province::removeBridges(ostream &output) const {
+
+  // Look for a bridge
+  bool hasBridge = false;
+  for ( int roadNum = 0; roadNum < _roads.size(); roadNum++) {
+    if (_roads[roadNum]._isBridge) {
+      hasBridge = true;
+      break;
+    }
+  }
+  // If only one town
+  if (_numberOfTowns == 1) {
+    output << "There is only one town, so the province "
+           << "will not be affected by a major storm";
+    return;
+  
+  // If province has no bridge
+  } else if (!hasBridge) {
+    output << "The province has no bridges, so it "
+           << "will not be affected by a major storm";
+    return;
+  } 
+
+  // Mark all towns as unvisited
+  list<int> toVisit;
+  for (int i = 0; i < _numberOfTowns; i++) {
+    toVisit.push_back(i);
+  }
+  output << "Connected components in event of a major storm are: ";
+  output << endl << endl;
+
+  while (!toVisit.empty()) {
+    // Mark current town as visited
+    int curr = toVisit.back();
+    toVisit.pop_back();
+
+    // Run BFS from current town
+    vector<int> bfsResult = bfs(curr);
+
+    // Mark all town in BFS result as visited
+    for (int i = 0; i < bfsResult.size(); i++) {
+      toVisit.remove(bfsResult[i]);
+    }
+
+    output << "     ";
+    output << "If all bridges fail, the following towns would form ";
+    output << "an isolated group:" << endl;
+
+    // Print names of all towns in connected component
+    for (int i = 0; i < bfsResult.size(); i++) {
+      output << "       ";
+      output << _towns[bfsResult[i]]._name << endl;
+    }
+  }
+  
+}
+
