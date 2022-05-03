@@ -14,7 +14,9 @@ The shortest paths from Wenham are:
 The road upgrading goal can be achieved at minimal cost by upgrading:
     Hamilton to Wenham
 
+
 ------------------------------------------------------------------
+
 The input data is:
 
 A
@@ -38,5 +40,6 @@ The shortest paths from A are:
 The road upgrading goal can be achieved at minimal cost by upgrading:
     B to A
     C to B
+
 
 ------------------------------------------------------------------
