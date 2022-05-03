@@ -32,34 +32,16 @@ bool eof() {
 }
 
 int main(int argc, char *argv[]) {
-	// Repeatedly read input from standard input
-  while (!eof()) {
-  	// create a new graph for each loop, which will read all of the
-    // corresponding data per graph
-  	Province theProvince(cin);
-
-		std::cout << std::endl;
-    std::cout << "------------------------------------------------" << std::endl;
-    std::cout << "---------------- New DataSet: ------------------" << std::endl;
-    std::cout << "------------------------------------------------" << std::endl;
-    std::cout << std::endl;
-
-    theProvince.printAll(0, cout);
-
-
-    theProvince.printShortestPath(std::cout);
-
-    std::cout << std::endl;
-    std::cout << "------------------------------------------------" << std::endl;
-    std::cout << "------------------------------------------------" << std::endl;
-    std::cout << std::endl;
-
-    theProvince.minSpan(std::cout);
-
-    std::cout << std::endl;
-    std::cout << "------------------------------------------------" << std::endl;
-    std::cout << "------------------------------------------------" << std::endl;
-    std::cout << std::endl;
-
-  }
+    // Repeatedly read input from standard input
+    while (!eof()) {
+        // create a new graph for each loop, which will read all of the
+        // corresponding data per graph
+        Province theProvince(cin);
+        theProvince.printAll(0, cout);
+        theProvince.printShortestPath(std::cout);
+        theProvince.minSpan(std::cout);
+        std::cout << std::endl;
+        std::cout << "------------------------------------------------------------------";
+        std::cout << endl;
+    }
 }

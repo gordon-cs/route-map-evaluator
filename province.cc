@@ -79,23 +79,20 @@ void Province::printAll(int start, std::ostream & output) {
   queue <int> toVisit; // use queue to keep track of which town to visit next
   toVisit.push(start);
   scheduled[start] = true;
-  output << "The input data is :" << endl << endl;
+  output << "The input data is:" << endl << endl;
 
   // Visit every town in the queue
   while (!toVisit.empty()) {
     int current = toVisit.front();
     toVisit.pop();
 
-    output << "   ";
     output << _towns[current]._name << endl;
 
     // Add current town's(vertex's) unscheduled neighbors to the queue
     for (Town::RoadList::iterator neighbor = _towns[current]._roads.begin();
       neighbor != _towns[current]._roads.end(); neighbor++) {
-      std::string neighborName = _towns[neighbor->_head]._name;
-
-      output << "         ";
-      output << neighborName << " " << neighbor->_length << " mi";
+        std::string neighborName = _towns[neighbor->_head]._name;
+        output << "        " << neighborName << " " << neighbor->_length << " mi";
 
       // if the type is bridge, then add to output
       if (neighbor ->_isBridge) {
@@ -113,7 +110,7 @@ void Province::printAll(int start, std::ostream & output) {
       }
     }
   }
-  output << endl << endl;
+  output << endl;
 }
 
 int Province::smallest(double dist[], std::list <int> toVisit,
@@ -142,11 +139,18 @@ void Province::printShortestPath(std::ostream & output) const {
 
   // if there is only one town only one town
   if (_numberOfTowns == 1) {
-    output << "There is only one town, so the provincial "
-           << "officials have no need of efficient routes!";
+      output << "There is only one town, so the provincial "
+             << "officials have no need of efficient routes!";
       return;
   }
 
+  output << "The shortest paths from " + _towns[0]._name;
+  output << " are:" << std::endl << std::endl;
+
+  // keeps track of the index of the predecessor to each
+  // town(vertex) n on the shortest path to n
+  int prev[_numberOfTowns];
+  
   output << "The shortest routes from " + _towns[0]._name;
   output << " are:" << std::endl << std::endl;
 
@@ -192,11 +196,11 @@ void Province::printShortestPath(std::ostream & output) const {
       }
   }
 
-  // print out the data for each non capital town
-  for (int i = 1; i < _numberOfTowns; i++) {
-    output << "      " << "The shortest route from " + _towns[0]._name;
-    output << " to " + _towns[i]._name + " is " << dist[i];
-    output << " mi:" << std::endl;
+    // print out the data for each non capital town
+    for (int i = 1; i < _numberOfTowns; i++) {
+        output << "    " << "The shortest path from " + _towns[0]._name;
+        output << " to " + _towns[i]._name + " is " << dist[i];
+        output << " mi:" << std::endl;
 
     // stack to hold the path to the town at index i
     std::stack <int> predecessors;
@@ -211,14 +215,14 @@ void Province::printShortestPath(std::ostream & output) const {
       predecessor = prev[predecessor];
       predecessors.push(predecessor);
     }
-
-    // print out the names for each entry in the stack
-    while (!predecessors.empty()) {
-      output << "            " << _towns[predecessors.top()]._name;
-      output << std::endl;
-      predecessors.pop();
+        // print out the names for each entry in the stack
+        while (!predecessors.empty()) {
+            output << "        " << _towns[predecessors.top()]._name;
+            output << std::endl;
+            predecessors.pop();
+        }
     }
-  }
+  cout << endl;  
 }
 
 /**
@@ -307,18 +311,16 @@ void Province::minSpan(std::ostream & output) const {
           } 
   }
     
-  output << "The road upgrading goal can be achieved at minimal cost by upgrading:";
-  output << std::endl << std::endl;
+    output << "The road upgrading goal can be achieved at minimal cost by upgrading:";
+    output << std::endl;
 
-  // Print names of towns in minimum spanning tree of province
-  for (int i = 0; i < minSpanTree.size(); i++) {
-    output << "      ";
-    output << _towns[minSpanTree[i]._head]._name;
-    output << " to ";
-    output << _towns[minSpanTree[i]._tail]._name << std::endl;
-  }
-}
-
+    // Print names of towns in minimum spanning tree of province
+    for (int i = 0; i < minSpanTree.size(); i++) {
+        output << "    ";
+        output << _towns[minSpanTree[i]._head]._name;
+        output << " to ";
+        output << _towns[minSpanTree[i]._tail]._name << std::endl;
+      
 std::vector<int> Province::bfs(int start) const {
   // Initialize list of towns scheduled to visit
   bool scheduled[_numberOfTowns];

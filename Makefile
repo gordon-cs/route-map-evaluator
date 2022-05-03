@@ -10,6 +10,6 @@ project5:	project5.cc province.cc province.h
 # test the code against an expected output file
 # this test should grow into a spaceship and end with blinkers
 test-requirement1:	project5
-	./project5 < test-data/requirement1.in > test-data/project5.out
-	diff test-data/project5.out test-data/requirement1.out > test.diff
-	wc -l test.diff
+	./project5 < test-data/t0502-combo.in > test-data/project5.out
+	diff test-data/project5.out test-data/shortest.out > test.diff
+	rm test-data/project5.out
