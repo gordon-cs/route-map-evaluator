@@ -318,3 +318,104 @@ void Province::minSpan(std::ostream & output) const {
     output << _towns[minSpanTree[i]._tail]._name << std::endl;
   }
 }
+
+std::vector<int> Province::bfs(int start) const {
+  // Initialize list of towns scheduled to visit
+  bool scheduled[_numberOfTowns];
+  for (int i = 0; i < _numberOfTowns; i ++) {
+    scheduled[i] = false;
+  }
+
+  // Initialize list of towns to visit with starting town
+  std::queue<int> toVisit;
+  toVisit.push(start);
+
+  scheduled[start] = true;
+  std::vector<int> results;
+
+  // While all towns have not been visited
+  while (!toVisit.empty()) {
+
+    // Remove current town from queue and add to results
+    int current = toVisit.front();
+    toVisit.pop();
+    results.push_back(current);
+
+    // Iterate over neighbors to current town
+    for (Town::RoadList::iterator neighbor =
+        _towns[current]._roads.begin();
+      neighbor != _towns[current]._roads.end();
+      neighbor ++) {
+
+      // If neighbor is not bridge and is not scheduled,
+      // add to results and schedule
+      if (!neighbor->_isBridge && !scheduled[neighbor->_head]) {
+        toVisit.push(neighbor->_head);
+        scheduled[neighbor->_head] = true;
+      }
+    }
+  }
+
+  return results;
+}
+
+/**
+ * Remove bridges and print the list of towns that remain connected
+ */
+void Province::removeBridges(ostream &output) const {
+
+  // Look for a bridge
+  bool hasBridge = false;
+  for ( int roadNum = 0; roadNum < _roads.size(); roadNum++) {
+    if (_roads[roadNum]._isBridge) {
+      hasBridge = true;
+      break;
+    }
+  }
+  // If only one town
+  if (_numberOfTowns == 1) {
+    output << "There is only one town, so the province "
+           << "will not be affected by a major storm";
+    return;
+  
+  // If province has no bridge
+  } else if (!hasBridge) {
+    output << "The province has no bridges, so it "
+           << "will not be affected by a major storm";
+    return;
+  } 
+
+  // Mark all towns as unvisited
+  list<int> toVisit;
+  for (int i = 0; i < _numberOfTowns; i++) {
+    toVisit.push_back(i);
+  }
+  output << "Connected components in event of a major storm are: ";
+  output << endl << endl;
+
+  while (!toVisit.empty()) {
+    // Mark current town as visited
+    int curr = toVisit.back();
+    toVisit.pop_back();
+
+    // Run BFS from current town
+    vector<int> bfsResult = bfs(curr);
+
+    // Mark all town in BFS result as visited
+    for (int i = 0; i < bfsResult.size(); i++) {
+      toVisit.remove(bfsResult[i]);
+    }
+
+    output << "     ";
+    output << "If all bridges fail, the following towns would form ";
+    output << "an isolated group:" << endl;
+
+    // Print names of all towns in connected component
+    for (int i = 0; i < bfsResult.size(); i++) {
+      output << "       ";
+      output << _towns[bfsResult[i]]._name << endl;
+    }
+  }
+  
+}
+
