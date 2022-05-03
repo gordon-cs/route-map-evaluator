@@ -18,17 +18,17 @@ using namespace std;
 * check if we are at the end of the file
 */
 bool eof() {
-    char c;
-    std::cin >> c;
-    // if the fie is ended, return true
-    if (std::cin.eof()) {
-        return true;
-    } else {
-        // if the file contains more data, return the previously gotten
-        // data to cin
-        std::cin.unget();
-        return false;
-    }
+	char c;
+	std::cin >> c;
+  // if the fie is ended, return true
+  if (std::cin.eof()) {
+    return true;
+  } else {
+  	// if the file contains more data, return the previously gotten
+    // data to cin
+    std::cin.unget();
+    return false;
+  }
 }
 
 int main(int argc, char *argv[]) {
