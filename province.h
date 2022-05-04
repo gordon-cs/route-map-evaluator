@@ -9,15 +9,15 @@
 #include <map>
 #include <queue>
 
-/**
-* towns connected by roads
-*/
 class Province {
   public:
 
 	/**
   * Constructor
   * @param source Input data for province
+  * 
+  * The constructor handles input data and creates a new province graph
+  * with town and road data
   */
 	Province(std::istream & source);
 
@@ -26,6 +26,13 @@ class Province {
   * @param output Stream to print data to
   */
   void printAll(int start, std::ostream & output);
+
+  /**
+   * Print the shortest path conections from the capital of a province
+   * to all other towns
+   * 
+   * @param output Stream to print data to
+   */
   void printShortestPath(std::ostream & output) const;
     
   /**
@@ -33,15 +40,29 @@ class Province {
   */
   void findShortestPath();
 
+  /**
+   * Create a minimum cost spanning tree of a province
+   * to calculate ideal 
+   * 
+   * @param output Stream to print data to
+   */
   void minSpan(std::ostream & output) const;
 
+  /**
+   * Remove bridges from the graph to evaluate 
+   * which towns would become isolated by a storm
+   * 
+   * @param output Stream to print data to
+   */
   void removeBridges(std::ostream & output) const;
 
+  /**
+   * Find the articulation points of a graph
+   * 
+   * @param output Stream to print data to
+   */
   void articulationPoints(std::ostream & output) const;
 
-  /**
-  * Destructor
-  */
   ~Province() {}
 
 private:
@@ -55,6 +76,17 @@ private:
  	*/
   std::vector<int> bfs(int start) const;
 
+  /**
+   * Recursive helper for articulationPoints()
+   * 
+   * @param u 
+   * @param visited 
+   * @param disc 
+   * @param low 
+   * @param time 
+   * @param parent 
+   * @param isAP 
+   */
   void APUtil(int u, bool visited[],
             int disc[], int low[], int& time, int parent,
             bool isAP[]) const;

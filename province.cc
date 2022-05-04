@@ -12,18 +12,6 @@
 
 using namespace std;
 
-/*
-* Constructor
-* @param source File containing province:
-*               1. One line: number of towns (n), number of roads (p)
-*                  as integers
-*               2. n lines: names of towns, all uppercase
-*               3. p lines: roads, defined as names of towns they
-*                  connect, bridge/not bridge, and length in miles
-*                  ex: BEVERLY DANVERS N 2.9 (connects Beverly and
-*                      Danvers, not a bridge, 2.9 miles long)
-*/
-
 Province::Province(std::istream & source) {
   // Read first line of input
   source >> _numberOfTowns >> _numberOfRoads;  
@@ -110,10 +98,6 @@ int Province::smallest(double dist[], std::list <int> toVisit,
     return smallest;
 }
 
-/**
-* Print the shortest route from the capital of the
-* province to each of the other towns
-*/
 void Province::printShortestPath(std::ostream & output) const {
 
   // if there is only one town only one town
