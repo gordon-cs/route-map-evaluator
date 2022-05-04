@@ -1,4 +1,5 @@
 # cps222-2022-p5-opokunyarko-colbert
+
 ### Attempted & Status
 
 - Requirement 1 : Read and print data
