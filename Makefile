@@ -4,7 +4,7 @@
 ifneq (,$(findstring xterm,${TERM}))
 	RED          := $(shell tput -Txterm setaf 1)
 	GREEN        := $(shell tput -Txterm setaf 2)
-	RESET := $(shell tput -Txterm sgr0)
+	RESET		     := $(shell tput -Txterm sgr0)
 else
 	RED          := ""
 	GREEN        := ""
@@ -14,7 +14,7 @@ endif
 # default target
 all: project5
 
-# compile the code into an executable called 'project1' using C++ 2011
+# compile the code into an executable called 'project5' using C++ 2011
 project5:	project5.cc province.cc province.h
 	g++ -std=c++11 -o project5 project5.cc province.cc
 
