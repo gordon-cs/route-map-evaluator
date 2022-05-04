@@ -12,7 +12,7 @@
 
 using namespace std;
 
-/*f
+/*
 * Constructor
 * @param source File containing province:
 *               1. One line: number of towns (n), number of roads (p)
@@ -32,48 +32,27 @@ Province::Province(std::istream & source) {
 
   // Read town names
   for (int i = 0; i < _numberOfTowns; i++) {
-    source >> _towns[i]._name; // This needs to be converted to vector, im not sure how exactly
-    //cout << "This is the name: " << &_towns[i]._name << endl;
+    source >> _towns[i]._name; 
     townMap[_towns[i]._name] = i;
   }   
 
   // Read roads
   for (int i = 0; i < _numberOfRoads; i++) {
-        std::string tail, head;
-        source >> tail >> head;
-        int tailIndex = townMap[tail];  // index of the first town
-        int headIndex = townMap[head];  // index of the second town
-
-  // Get the type of road ("B" If Bridge, "N" if normal road)
-  char type;
-  source >> type;
-  bool isBridge = (type == 'B');
-  // Not sure how to Get the type if it is a normal road (ie. Not a Bridge) 
-
-  // Length of road
-  double length;
-  source >> length;
-
-  // Add a road to the road list
-  Road newRoad(headIndex, tailIndex, isBridge, length);
-  _roads.push_back(newRoad);
-
-  // Add a road to two connecting towns
-  _towns[tailIndex]._roads.push_back(Road(headIndex, tailIndex,
-                                          isBridge, length));
-  _towns[headIndex]._roads.push_back(Road(tailIndex, headIndex,
-            isBridge, length));
-
-
+    string tail, head;
+    char bridgeFlag;
+    double length;
+    source >> tail >> head >> bridgeFlag >> length;
+    bool isBridge = (bridgeFlag == 'B');
+    _roads.push_back(Road(townMap.at(head), townMap.at(tail), isBridge, length));
+    _towns[townMap.at(tail)]._roads.push_back(Road(townMap.at(head), townMap.at(tail), isBridge, length));
+    _towns[townMap.at(head)]._roads.push_back(Road(townMap.at(tail), townMap.at(head), isBridge, length));
   }   
 }
 
 void Province::printAll(int start, std::ostream & output) {
   // keep track of whether a town(vertex) has been scheduled to be visited
   bool scheduled[_numberOfTowns];
-  for (int i = 0; i < _numberOfTowns; i++){
-    scheduled[i] = false;
-  }
+  memset(scheduled, 0, sizeof scheduled); // initialize to 0/false
 
   // Keep track of which towns have been visited
   queue <int> toVisit; // use queue to keep track of which town to visit next
@@ -145,13 +124,6 @@ void Province::printShortestPath(std::ostream & output) const {
   }
 
   output << "The shortest paths from " + _towns[0]._name;
-  output << " are:" << std::endl << std::endl;
-
-  // keeps track of the index of the predecessor to each
-  // town(vertex) n on the shortest path to n
-  int prev[_numberOfTowns];
-  
-  output << "The shortest routes from " + _towns[0]._name;
   output << " are:" << std::endl << std::endl;
 
   // keeps track of the index of the predecessor to each
@@ -311,15 +283,18 @@ void Province::minSpan(std::ostream & output) const {
           } 
   }
     
-    output << "The road upgrading goal can be achieved at minimal cost by upgrading:";
-    output << std::endl;
+  output << "The road upgrading goal can be achieved at minimal cost by upgrading:";
+  output << std::endl;
 
-    // Print names of towns in minimum spanning tree of province
-    for (int i = 0; i < minSpanTree.size(); i++) {
-        output << "    ";
-        output << _towns[minSpanTree[i]._head]._name;
-        output << " to ";
-        output << _towns[minSpanTree[i]._tail]._name << std::endl;
+  // Print names of towns in minimum spanning tree of province
+  for (int i = 0; i < minSpanTree.size(); i++) {
+      output << "    ";
+      output << _towns[minSpanTree[i]._head]._name;
+      output << " to ";
+      output << _towns[minSpanTree[i]._tail]._name << std::endl;
+  }      
+  output << endl;
+}
       
 std::vector<int> Province::bfs(int start) const {
   // Initialize list of towns scheduled to visit
@@ -374,26 +349,14 @@ void Province::removeBridges(ostream &output) const {
       break;
     }
   }
-  // If only one town
-  if (_numberOfTowns == 1) {
-    output << "There is only one town, so the province "
-           << "will not be affected by a major storm";
-    return;
-  
-  // If province has no bridge
-  } else if (!hasBridge) {
-    output << "The province has no bridges, so it "
-           << "will not be affected by a major storm";
-    return;
-  } 
 
   // Mark all towns as unvisited
   list<int> toVisit;
   for (int i = 0; i < _numberOfTowns; i++) {
     toVisit.push_back(i);
   }
-  output << "Connected components in event of a major storm are: ";
-  output << endl << endl;
+  output << "Connected components in event of a major storm are:";
+  output << endl;
 
   while (!toVisit.empty()) {
     // Mark current town as visited
@@ -408,16 +371,95 @@ void Province::removeBridges(ostream &output) const {
       toVisit.remove(bfsResult[i]);
     }
 
-    output << "     ";
+    output << "   ";
     output << "If all bridges fail, the following towns would form ";
     output << "an isolated group:" << endl;
 
     // Print names of all towns in connected component
     for (int i = 0; i < bfsResult.size(); i++) {
-      output << "       ";
+      output << "        ";
       output << _towns[bfsResult[i]]._name << endl;
     }
+    output << endl;
   }
-  
 }
 
+void Province::APUtil(int u, bool visited[],
+            int disc[], int low[], int& time, int parent,
+            bool isAP[]) const {
+    // Count of children in DFS Tree
+    int children = 0;
+ 
+    // Mark the current node as visited
+    visited[u] = true;
+ 
+    // Initialize discovery time and low value
+    disc[u] = low[u] = ++time;
+ 
+    // Go through all vertices adjacent to this
+    for (int v = 0; v < _numberOfTowns; v++) {
+        // If v is not visited yet, then make it a child of u
+        // in DFS tree and recur for it
+        if (!visited[v]) {
+            children++;
+            APUtil(v, visited, disc, low, time, u, isAP);
+ 
+            // Check if the subtree rooted with v has
+            // a connection to one of the ancestors of u
+            low[u] = min(low[u], low[v]);
+ 
+            // If u is not root and low value of one of
+            // its child is more than discovery value of u.
+            if (parent != -1 && low[v] >= disc[u]) {
+                isAP[u] = true;
+            }    
+        } else if (v != parent) {
+            low[u] = min(low[u], disc[v]);
+        }    
+    }
+ 
+    // If u is root of DFS tree and has two or more children.
+    if (parent == -1 && children > 1) {
+        isAP[u] = true; 
+    }    
+}
+ 
+void Province::articulationPoints(std::ostream & output) const
+{  
+    int disc[_numberOfTowns];
+    memset(disc, 0, sizeof disc);
+    int low[_numberOfTowns];
+    bool visited[_numberOfTowns];
+    memset(visited, false, sizeof visited);
+    bool isAP[_numberOfTowns];
+    memset(isAP, false, sizeof isAP);
+    int time = 0, par = -1;
+ 
+    // Adding this loop so that the
+    // code works even if we are given
+    // disconnected graph
+    for (int u = 0; u < _numberOfTowns; u++) {
+        if (!visited[u]) {
+            APUtil(u, visited, disc, low,
+                   time, par, isAP);
+        }
+    }    
+  output << "Destruction of any of the following would result in the province becoming" << endl << "disconnected:" << endl;
+
+  int count = 0;
+  // Printing the APs
+  for (int u = 0; u < _numberOfTowns; u++) {
+      if (isAP[u] == true) {
+          output << "    " << _towns[u]._name << endl;
+          count++;
+      }
+  }  
+  if (count == 0) {
+    output << "    (None)" << endl;
+  }
+  output << endl;
+
+  for (bool i : isAP) {
+    cerr << i << endl;
+  }
+}

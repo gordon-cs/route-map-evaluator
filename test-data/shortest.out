@@ -14,6 +14,15 @@ The shortest paths from Wenham are:
 The road upgrading goal can be achieved at minimal cost by upgrading:
     Hamilton to Wenham
 
+Connected components in event of a major storm are:
+   If all bridges fail, the following towns would form an isolated group:
+        Wenham
+        Hamilton
+
+Destruction of any of the following would result in the province becoming
+disconnected:
+    (None)
+
 
 ------------------------------------------------------------------
 
@@ -41,5 +50,16 @@ The road upgrading goal can be achieved at minimal cost by upgrading:
     B to A
     C to B
 
+Connected components in event of a major storm are:
+   If all bridges fail, the following towns would form an isolated group:
+        A
+
+   If all bridges fail, the following towns would form an isolated group:
+        B
+
+   If all bridges fail, the following towns would form an isolated group:
+        C
+
 
 ------------------------------------------------------------------
+

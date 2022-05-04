@@ -40,8 +40,10 @@ int main(int argc, char *argv[]) {
         theProvince.printAll(0, cout);
         theProvince.printShortestPath(std::cout);
         theProvince.minSpan(std::cout);
+        theProvince.removeBridges(cout);
+        theProvince.articulationPoints(cout);
         std::cout << std::endl;
         std::cout << "------------------------------------------------------------------";
-        std::cout << endl;
+        cout << endl << endl;
     }
 }
