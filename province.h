@@ -61,6 +61,10 @@ private:
 	* @return - List of indices of towns in order of traversal
  	*/
   std::vector<int> bfs(int start) const;
+
+  void APUtil(int u, bool visited[],
+            int disc[], int low[], int& time, int parent,
+            bool isAP[]) const;
   
   void dfsAux(int current, std::vector<int> & dfsTowns, bool visited []) const;
 
