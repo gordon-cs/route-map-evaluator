@@ -4,7 +4,7 @@
 ifneq (,$(findstring xterm,${TERM}))
 	RED          := $(shell tput -Txterm setaf 1)
 	GREEN        := $(shell tput -Txterm setaf 2)
-	RESET := $(shell tput -Txterm sgr0)
+	RESET		     := $(shell tput -Txterm sgr0)
 else
 	RED          := ""
 	GREEN        := ""
@@ -14,7 +14,7 @@ endif
 # default target
 all: project5
 
-# compile the code into an executable called 'project1' using C++ 2011
+# compile the code into an executable called 'project5' using C++ 2011
 project5:	project5.cc province.cc province.h
 	g++ -std=c++11 -o project5 project5.cc province.cc
 
@@ -27,6 +27,7 @@ test-all:	project5 test-nowhere test-one-road test-simple test-local test-combo
 test:	project5
 	./project5 < test-data/t0502-combo.in > test-data/project5.out
 	diff test-data/project5.out test-data/shortest.out > test.diff
+	rm test.diff && rm project5.out
 
 # test the code against an expected output file
 test-nowhere:	project5
@@ -35,6 +36,7 @@ test-nowhere:	project5
 	@echo ""
 	./project5 < test-data/t01-nowhere.in > test-data/project5.out
 	diff test-data/project5.out test-data/t01-nowhere.out > test.diff
+	rm test.diff && rm project5.out
 	@echo "$(GREEN)Passed!$(RESET)"
 
 # test the code against an expected output file
@@ -44,6 +46,7 @@ test-one-road:	project5
 	@echo ""
 	./project5 < test-data/t02-one-road.in > test-data/project5.out
 	diff test-data/project5.out test-data/t02-one-road.out > test.diff
+	rm test.diff && rm project5.out
 	@echo "$(GREEN)Passed!$(RESET)"
 
 # test the code against an expected output file
@@ -53,6 +56,7 @@ test-simple:	project5
 	@echo ""
 	./project5 < test-data/t03-simple.in > test-data/project5.out
 	diff test-data/project5.out test-data/t03-simple.out > test.diff
+	rm test.diff && rm project5.out
 	@echo "$(GREEN)Passed!$(RESET)"
 
 # test the code against an expected output file
@@ -62,6 +66,7 @@ test-local:	project5
 	@echo ""
 	./project5 < test-data/t08-local.in > test-data/project5.out
 	diff test-data/project5.out test-data/t08-local.out > test.diff
+	rm test.diff && rm project5.out
 	@echo "$(GREEN)Passed!$(RESET)"
 
 # test the code against an expected output file
@@ -71,4 +76,5 @@ test-combo:	project5
 	@echo ""
 	./project5 < test-data/t0502-combo.in > test-data/project5.out
 	diff test-data/project5.out test-data/t0502-combo.out > test.diff
+	rm test.diff && rm project5.out
 	@echo "$(GREEN)Passed!$(RESET)"
