@@ -1,0 +1,5 @@
+g++ -std=c++11 -o project5 project5.cc province.cc
+
+[31m--- Local Test ---(B[m
+
+./project5 < test-data/t08-local.in > test-data/project5.out

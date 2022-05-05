@@ -7,6 +7,7 @@
 #include <string>
 #include <stack>
 #include <cfloat>
+#include <array>
 
 #include "province.h"
 
@@ -179,18 +180,10 @@ void Province::printShortestPath(std::ostream & output) const {
   cout << endl;  
 }
 
-/**
- * < operator used to compare two roads
- * @param road2 A road
- * @return True if road1 is shorter in length than road 2
- */
 bool Province::Road::operator < (Road road2) const {
   return this->_length < road2._length;
 }
 
-/**
- * Find minimum cost spanning tree of the province
- */
 void Province::minSpan(std::ostream & output) const {
   // if only one town
   if (_numberOfTowns == 1) {
@@ -313,6 +306,10 @@ std::vector<int> Province::bfs(int start) const {
   return results;
 }
 
+void ap(int dfsTree[]) {
+  
+}
+
 /**
  * Remove bridges and print the list of towns that remain connected
  */
@@ -360,6 +357,40 @@ void Province::removeBridges(ostream &output) const {
   }
 }
 
+void Province::dfs(vector<int> & dfsTowns) const {
+  stack<int> toExplore;
+  int town = 0; 
+  bool visited[_numberOfTowns];
+  memset(visited, false, sizeof visited);
+  while(true) {
+    cerr << "while" << endl;
+    visited[town] = true;
+    cerr << "town " << _towns[town]._name << " is " << visited[town] << endl;
+    // find an unvisited road and continue while loop
+    for (std::list<Road>::const_iterator it = _towns[town]._roads.begin(); it != _towns[town]._roads.end(); it++) {
+      cerr << _towns[town]._name << "'s " << _towns[it->_head]._name << " " << _towns[it->_tail]._name << " " << _towns[town]._roads.size() << endl;
+      if (!visited[it->_head]) {
+        cerr << "New visit" << endl;
+        toExplore.push(town);
+        dfsTowns.push_back(town);
+        town = it->_head;
+        break;
+      }
+    }
+    if (toExplore.empty()) {
+      cerr << "empty" << endl;
+      break;
+    } else {
+      cerr << "leaf" << endl;
+      town = toExplore.top();
+      toExplore.pop();
+    }
+  }
+  for(std::vector<int>::iterator it = std::begin(dfsTowns); it != std::end(dfsTowns); ++it) {
+    std::cout << *it << "\n";
+  }
+}
+
 void Province::APUtil(int u, bool visited[],
             int disc[], int low[], int& time, int parent,
             bool isAP[]) const {
@@ -402,6 +433,7 @@ void Province::APUtil(int u, bool visited[],
  
 void Province::articulationPoints(std::ostream & output) const
 {  
+  
   int disc[_numberOfTowns];
   memset(disc, 0, sizeof disc);
   int low[_numberOfTowns];
@@ -410,6 +442,8 @@ void Province::articulationPoints(std::ostream & output) const
   bool isAP[_numberOfTowns];
   memset(isAP, false, sizeof isAP);
   int time = 0, par = -1;
+  vector<int> towns;
+  dfs(towns);
 
   // Adding this loop so that the
   // code works even if we are given
@@ -433,8 +467,4 @@ void Province::articulationPoints(std::ostream & output) const
     output << "    (None)" << endl;
   }
   output << endl;
-
-  for (bool i : isAP) {
-    cerr << i << endl;
-  }
 }

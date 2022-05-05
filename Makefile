@@ -19,15 +19,12 @@ project5:	project5.cc province.cc province.h
 	g++ -std=c++11 -o project5 project5.cc province.cc
 
 # test all the code
-test-all:	project5 test-nowhere test-one-road test-simple test-local test-combo
-	@echo ""
-	@echo "$(GREEN)Passed all tests!$(RESET)"
-	@echo ""
+test-all:	project5 test-requirement1 test-nowhere test-one-road test-simple test-local test-combo
+	@rm test.diff && rm test-data/project5.out
 
-test:	project5
-	./project5 < test-data/t0502-combo.in > test-data/project5.out
-	diff test-data/project5.out test-data/shortest.out > test.diff
-	rm test.diff && rm project5.out
+test-requirement1:	project5
+	./project5 < test-data/requirement1.in > test-data/project5.out
+	-@diff test-data/project5.out test-data/requirement1.out > test.diff && echo "$(GREEN)Passed!$(RESET)"
 
 # test the code against an expected output file
 test-nowhere:	project5
@@ -35,9 +32,7 @@ test-nowhere:	project5
 	@echo "$(RED)--- Nowhere Test ---$(RESET)"
 	@echo ""
 	./project5 < test-data/t01-nowhere.in > test-data/project5.out
-	diff test-data/project5.out test-data/t01-nowhere.out > test.diff
-	rm test.diff && rm project5.out
-	@echo "$(GREEN)Passed!$(RESET)"
+	-@diff test-data/project5.out test-data/t01-nowhere.out > test.diff && echo "$(GREEN)Passed!$(RESET)"
 
 # test the code against an expected output file
 test-one-road:	project5
@@ -45,9 +40,7 @@ test-one-road:	project5
 	@echo "$(RED)--- One Road Test ---$(RESET)"
 	@echo ""
 	./project5 < test-data/t02-one-road.in > test-data/project5.out
-	diff test-data/project5.out test-data/t02-one-road.out > test.diff
-	rm test.diff && rm project5.out
-	@echo "$(GREEN)Passed!$(RESET)"
+	-@diff test-data/project5.out test-data/t02-one-road.out > test.diff && echo "$(GREEN)Passed!$(RESET)"
 
 # test the code against an expected output file
 test-simple:	project5
@@ -55,9 +48,7 @@ test-simple:	project5
 	@echo "$(RED)--- Simple Test ---$(RESET)"
 	@echo ""
 	./project5 < test-data/t03-simple.in > test-data/project5.out
-	diff test-data/project5.out test-data/t03-simple.out > test.diff
-	rm test.diff && rm project5.out
-	@echo "$(GREEN)Passed!$(RESET)"
+	-@diff test-data/project5.out test-data/t03-simple.out > test.diff && echo "$(GREEN)Passed!$(RESET)"
 
 # test the code against an expected output file
 test-local:	project5
@@ -65,9 +56,7 @@ test-local:	project5
 	@echo "$(RED)--- Local Test ---$(RESET)"
 	@echo ""
 	./project5 < test-data/t08-local.in > test-data/project5.out
-	diff test-data/project5.out test-data/t08-local.out > test.diff
-	rm test.diff && rm project5.out
-	@echo "$(GREEN)Passed!$(RESET)"
+	-@diff test-data/project5.out test-data/t08-local.out > test.diff && echo "$(GREEN)Passed!$(RESET)"
 
 # test the code against an expected output file
 test-combo:	project5
@@ -75,6 +64,4 @@ test-combo:	project5
 	@echo "$(RED)--- Combo Test ---$(RESET)"
 	@echo ""
 	./project5 < test-data/t0502-combo.in > test-data/project5.out
-	diff test-data/project5.out test-data/t0502-combo.out > test.diff
-	rm test.diff && rm project5.out
-	@echo "$(GREEN)Passed!$(RESET)"
+	-@diff test-data/project5.out test-data/t0502-combo.out > test.diff && echo "$(GREEN)Passed!$(RESET)"
