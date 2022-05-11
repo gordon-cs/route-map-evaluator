@@ -34,8 +34,10 @@ Province::Province(std::istream & source) {
     source >> tail >> head >> bridgeFlag >> length;
     bool isBridge = (bridgeFlag == 'B');
     _roads.push_back(Road(townMap.at(head), townMap.at(tail), isBridge, length));
-    _towns[townMap.at(tail)]._roads.push_back(Road(townMap.at(head), townMap.at(tail), isBridge, length));
-    _towns[townMap.at(head)]._roads.push_back(Road(townMap.at(tail), townMap.at(head), isBridge, length));
+    _towns[townMap.at(tail)]._roads.push_back(
+            Road(townMap.at(head), townMap.at(tail), isBridge, length));
+    _towns[townMap.at(head)]._roads.push_back(
+            Road(townMap.at(tail), townMap.at(head), isBridge, length));
   }   
 }
 
@@ -352,9 +354,14 @@ void Province::removeBridges(ostream &output) const {
   }
 }
 
-
-
-void Province::dfs(int v, bool visited[], int low[], int tin[], int & timer, std::vector<int> & ap, int p = -1) {
+void Province::dfs(int v, 
+                   bool visited[], 
+                   int low[], 
+                   int tin[], 
+                   int & timer, 
+                   std::vector<int> & ap, 
+                   int p = -1) 
+{
   visited[v] = true;
   tin[v] = low[v] = timer++;
   int children=0;
@@ -387,7 +394,8 @@ void Province::articulationPoints(std::ostream & output) {
       dfs(i, visited, low, tin, timer, ap);
     }  
   }
-  output << "Destruction of any of the following would result in the province becoming\ndisconnected:" << endl;
+  output << "Destruction of any of the following would result in the province becoming";
+  output << "\ndisconnected:" << endl;
   
   int apCount = 0;
   for (int i : ap) {
