@@ -12,7 +12,7 @@
 
 - **Requirement 3 : Upgrading**
 
-> minSpan() method implemented to find ideal connections for faster traversals and output recomendations to the terminal. Passes all tests with no diff issues and correct stylings. Completed by Elijah Opoku-Nyarko with later revisions by Jake Colbert. 
+> minSpan() method implemented to find ideal connections for faster traversals and output recomendations to the terminal. Passes most tests with occasional error and correct stylings. Completed by Elijah Opoku-Nyarko with later revisions by Jake Colbert. 
 
 - **Requirement 4 : Worst-Case Analysis of Bridge Collapse**
 
@@ -20,7 +20,7 @@
 
 - **Requirement 5 : Articulation Points**
 
-> articulationPoints() method implemented to find points of the graph at which their destruction would disconnect the province graph. Does not pass tests. isAP[] array does not get modified by the recursive method and prints all zeros as it was initialized. In-Progress by Jake Colbert
+> articulationPoints() method implemented to find points of the graph at which their destruction would disconnect the province graph. Passes all tests with no diff issues and correct stylings. Completed by Jake Colbert.
 
 ### Makefile & Testing
 

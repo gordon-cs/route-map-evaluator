@@ -7,6 +7,7 @@
 #include <string>
 #include <list>
 #include <map>
+#include <vector>
 #include <queue>
 
 class Province {
@@ -61,7 +62,7 @@ class Province {
    * 
    * @param output Stream to print data to
    */
-  void articulationPoints(std::ostream & output) const;
+  void articulationPoints(std::ostream & output);
 
   ~Province() {}
 
@@ -69,28 +70,13 @@ private:
 
 	int smallest(double dist [], std::list <int> toVisit, int numTowns) const;
 
-  void dfs(std::vector<int> & dfsTowns) const;
+  void dfs(int v, bool visited[], int low[], int tin[], int & timer, std::vector<int> & ap, int p);
 	/**
 	* Conduct a breadth-first traversal on the province, ignoring bridges
 	* @param start Index of town to start traversal at
 	* @return - List of indices of towns in order of traversal
  	*/
   std::vector<int> bfs(int start) const;
-
-  /**
-   * Recursive helper for articulationPoints()
-   * 
-   * @param u 
-   * @param visited 
-   * @param disc 
-   * @param low 
-   * @param time 
-   * @param parent 
-   * @param isAP 
-   */
-  void APUtil(int u, bool visited[],
-            int disc[], int low[], int& time, int parent,
-            bool isAP[]) const;
 
   /**
   * Road
