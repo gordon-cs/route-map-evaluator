@@ -5,8 +5,10 @@
 
 #include <algorithm>
 #include <string>
+#include <vector>
 #include <stack>
 #include <cfloat>
+#include <array>
 
 #include "province.h"
 
@@ -32,8 +34,10 @@ Province::Province(std::istream & source) {
     source >> tail >> head >> bridgeFlag >> length;
     bool isBridge = (bridgeFlag == 'B');
     _roads.push_back(Road(townMap.at(head), townMap.at(tail), isBridge, length));
-    _towns[townMap.at(tail)]._roads.push_back(Road(townMap.at(head), townMap.at(tail), isBridge, length));
-    _towns[townMap.at(head)]._roads.push_back(Road(townMap.at(tail), townMap.at(head), isBridge, length));
+    _towns[townMap.at(tail)]._roads.push_back(
+            Road(townMap.at(head), townMap.at(tail), isBridge, length));
+    _towns[townMap.at(head)]._roads.push_back(
+            Road(townMap.at(tail), townMap.at(head), isBridge, length));
   }   
 }
 
@@ -179,18 +183,10 @@ void Province::printShortestPath(std::ostream & output) const {
   cout << endl;  
 }
 
-/**
- * < operator used to compare two roads
- * @param road2 A road
- * @return True if road1 is shorter in length than road 2
- */
 bool Province::Road::operator < (Road road2) const {
   return this->_length < road2._length;
 }
 
-/**
- * Find minimum cost spanning tree of the province
- */
 void Province::minSpan(std::ostream & output) const {
   // if only one town
   if (_numberOfTowns == 1) {
@@ -279,9 +275,7 @@ void Province::minSpan(std::ostream & output) const {
 std::vector<int> Province::bfs(int start) const {
   // Initialize list of towns scheduled to visit
   bool scheduled[_numberOfTowns];
-  for (int i = 0; i < _numberOfTowns; i ++) {
-    scheduled[i] = false;
-  }
+  memset(scheduled, 0, sizeof scheduled); // initialize to 0/false
 
   // Initialize list of towns to visit with starting town
   std::queue<int> toVisit;
@@ -360,81 +354,56 @@ void Province::removeBridges(ostream &output) const {
   }
 }
 
-void Province::APUtil(int u, bool visited[],
-            int disc[], int low[], int& time, int parent,
-            bool isAP[]) const {
-  // Count of children in DFS Tree
-  int children = 0;
-
-  // Mark the current node as visited
-  visited[u] = true;
-
-  // Initialize discovery time and low value
-  disc[u] = low[u] = ++time;
-
-  // Go through all vertices adjacent to this
-  for (int v = 0; v < _numberOfTowns; v++) {
-    // If v is not visited yet, then make it a child of u
-    // in DFS tree and recur for it
-    if (!visited[v]) {
-      children++;
-      APUtil(v, visited, disc, low, time, u, isAP);
-
-      // Check if the subtree rooted with v has
-      // a connection to one of the ancestors of u
-      low[u] = min(low[u], low[v]);
-
-      // If u is not root and low value of one of
-      // its child is more than discovery value of u.
-      if (parent != -1 && low[v] >= disc[u]) {
-        isAP[u] = true;
-      }    
-    } else if (v != parent) {
-      low[u] = min(low[u], disc[v]);
-    }    
+void Province::dfs(int v, 
+                   bool visited[], 
+                   int low[], 
+                   int tin[], 
+                   int & timer, 
+                   std::vector<int> & ap, 
+                   int p = -1) 
+{
+  visited[v] = true;
+  tin[v] = low[v] = timer++;
+  int children=0;
+  for (Road to : _towns[v]._roads) {
+    if (to._tail == p) continue;
+    if (visited[to._head]) {
+      low[v] = min(low[v], tin[to._head]);
+    } else {
+      dfs(to._head, visited, low, tin, timer, ap, v);
+      low[v] = min(low[v], low[to._head]);
+      if (low[to._head] >= tin[v] && p!=-1) {
+        ap.push_back(v);
+      }  
+      ++children;
+    }
   }
-
-  // If u is root of DFS tree and has two or more children.
-  if (parent == -1 && children > 1) {
-      isAP[u] = true; 
-  }    
+  if (p == -1 && children > 1) {
+    ap.push_back(v);
+  }
 }
- 
-void Province::articulationPoints(std::ostream & output) const
-{  
-  int disc[_numberOfTowns];
-  memset(disc, 0, sizeof disc);
-  int low[_numberOfTowns];
-  bool visited[_numberOfTowns];
-  memset(visited, false, sizeof visited);
-  bool isAP[_numberOfTowns];
-  memset(isAP, false, sizeof isAP);
-  int time = 0, par = -1;
 
-  // Adding this loop so that the
-  // code works even if we are given
-  // disconnected graph
-  for (int u = 0; u < _numberOfTowns; u++) {
-    if (!visited[u]) {
-      APUtil(u, visited, disc, low, time, par, isAP);
-    }
-  }    
-  output << "Destruction of any of the following would result in the province becoming" << endl << "disconnected:" << endl;
-  int count = 0;
-
-  // Printing the APs
-  for (int u = 0; u < _numberOfTowns; u++) {
-    if (isAP[u] == true) {
-      output << "    " << _towns[u]._name << endl;
-      count++;
-    }
-  }  
-  if (count == 0) {
-    output << "    (None)" << endl;
+void Province::articulationPoints(std::ostream & output) {
+  std::vector<int> ap;
+  bool visited[_numberOfTowns];  memset(visited, 0, sizeof visited);
+  int tin[_numberOfTowns]; memset(tin, 0, sizeof tin);
+  int low[_numberOfTowns]; memset(low, 0, sizeof low);
+  int timer = 0;
+  for (int i = 0; i < _numberOfTowns; ++i) {
+    if (!visited[i]) {
+      dfs(i, visited, low, tin, timer, ap);
+    }  
   }
+  output << "Destruction of any of the following would result in the province becoming";
+  output << "\ndisconnected:" << endl;
+  
+  int apCount = 0;
+  for (int i : ap) {
+    output << "    " << _towns[i]._name << endl;
+    apCount++;  
+  }
+
+  if (apCount == 0) { output << "    (None)" << endl; }
+
   output << endl;
-
-  for (bool i : isAP) {
-    cerr << i << endl;
-  }
 }
