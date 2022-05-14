@@ -32,8 +32,12 @@ bool eof() {
 }
 
 int main(int argc, char *argv[]) {
+    //RT Indentation should be consistent with rest of code (2, not 4)
     // Repeatedly read input from standard input
     while (!eof()) {
+        //RT This is nice clean code, made possible by good class
+        // design which gives a good interface.
+
         // create a new graph for each loop, which will read all of the
         // corresponding data per graph
         Province theProvince(cin);
