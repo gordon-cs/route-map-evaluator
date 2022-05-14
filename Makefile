@@ -1,5 +1,6 @@
 # Author: Elijah Opoku-Nyarko and Jake Colbert
 
+#RT Fancy and fun!
 # define colors
 ifneq (,$(findstring xterm,${TERM}))
 	RED          := $(shell tput -Txterm setaf 1)
@@ -15,8 +16,23 @@ endif
 all: project5
 
 # compile the code into an executable called 'project5' using C++ 2011
-project5:	project5.cc province.cc province.h
-	g++ -std=c++11 -o project5 project5.cc province.cc
+#RT This rule is fine for this small project.  But for a larger project,
+# it speeds compiling and debugging to only recompile what's necessary.
+#project5:	project5.cc province.cc province.h
+#	g++ -std=c++11 -o project5 project5.cc province.cc
+#RT Here's what I mean
+project5:	project5.o province.o
+	g++ -o project5 project5.o province.o
+
+#RT Set compiler flags to use C++ 11 for all compiling
+CPPFLAGS=-std=c++11
+
+#RT "make" knows how to compile .cc files to .o, but these rules tell it when.
+# It knows that .o depends on .cc, so we just tell it that these .o depend
+# on province.h.  So when province.h changes, both will be recompiled.
+project5.o:	province.h
+province.o:	province.h
+
 
 # test all the code
 test-all:	project5 test-requirement1 test-nowhere test-one-road test-simple test-local test-combo
